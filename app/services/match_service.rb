@@ -27,13 +27,14 @@ class MatchService
 
     return if plays[play["i"]][play["j"]]
     plays[play["i"]][play["j"]] = play["symbol"]
-    if full?(id)
-      @data[id.to_sym].winner = 'none'
-      return @data[id.to_sym]
-    end
 
     if won(id)
       @data[id.to_sym].winner = play["symbol"]
+      return @data[id.to_sym]
+    end
+
+    if full?(id)
+      @data[id.to_sym].winner = 'none'
       return @data[id.to_sym]
     end
 
