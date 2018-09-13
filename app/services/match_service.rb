@@ -67,8 +67,8 @@ class MatchService
 
   def won_diagonally(id)
     plays = @data[id.to_sym].plays
-    all_equal?([0, 1, 2].map {|index| plays[index][index]}) ||
-    all_equal?([2, 1, 0].map {|index| plays[index][index]})
+    all_equal?(plays.each_with_index.map { |row, i| row[i] }) ||
+    all_equal?(plays.each_with_index.map { |row, i| row[row.length - 1 - i] })
   end
 
   def all_equal?(list)
