@@ -4,6 +4,10 @@ class MatchChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
+    data = MatchService.instance.data[params[:id].to_sym]
+    data.players.delete(params[:client].to_sym)
+    data.ready = false
+    broadcast(game: data.as_json)
     stop_all_streams
   end
 
