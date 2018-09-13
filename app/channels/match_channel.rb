@@ -8,29 +8,13 @@ class MatchChannel < ApplicationCable::Channel
   end
 
   def get_game(data)
-    puts '<>' * 100
-    p params
-    p data
-    data = {
-      players: [],
-      game: {
-        turn: 'X',
-        isReadyToPlay: false,
-        winner: nil,
-        plays: [
-          [nil, nil, nil],
-          [nil, nil, nil],
-          [nil, nil, nil]
-        ]
-      }
-    }
-    broadcast(data)
+    match = MatchService.instance.start_game(params[:id])
+    broadcast(match.as_json)
   end
 
   def make_play(data)
-    puts '<>' * 100
-    p params
-    p data
+    match = MatchService.instance.make_play(params[:id], data["play"])
+    broadcast(match.as_json)
   end
 
   private

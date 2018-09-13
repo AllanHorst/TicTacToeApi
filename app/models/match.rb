@@ -2,9 +2,8 @@ class Match
   attr_accessor :players, :turn, :winner, :plays
 
   def initialize
-    @players = []
     @turn = 'X'
-    @isReadyToPlay = false
+    @plays = [[nil, nil, nil], [nil, nil, nil], [nil, nil, nil]]
     @winner = nil
   end
 end
