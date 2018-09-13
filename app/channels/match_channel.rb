@@ -7,14 +7,19 @@ class MatchChannel < ApplicationCable::Channel
     stop_all_streams
   end
 
-  def get_game(data)
-    match = MatchService.instance.start_game(params[:id])
-    broadcast(match.as_json)
+  def start_game(data)
+    match = MatchService.instance.start_game(params[:id], data["client"])
+    broadcast(game: match.as_json)
+  end
+
+  def restart_game(data)
+    match = MatchService.instance.restart_game(params[:id], data["client"])
+    broadcast(game: match.as_json)
   end
 
   def make_play(data)
     match = MatchService.instance.make_play(params[:id], data["play"])
-    broadcast(match.as_json)
+    broadcast(game: match.as_json)
   end
 
   private
