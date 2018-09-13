@@ -5,7 +5,7 @@ class MatchService
 
   def start_game(id, client)
     @data = {} unless @data
-    @data[id.to_sym] = Match.new unless @data[id.to_sym]
+    @data[id.to_sym] = Match.new if !@data[id.to_sym] || @data[id.to_sym].winner
     add_player(id, client)
     @data[id.to_sym]
   end
@@ -21,11 +21,16 @@ class MatchService
 
     return if plays[play["i"]][play["j"]]
     plays[play["i"]][play["j"]] = play["symbol"]
-    won(id)
+    if full?(id)
+      @data[id.to_sym].winner = 'none'
+      return @data[id.to_sym]
+    end
+
     if won(id)
       @data[id.to_sym].winner = play["symbol"]
       return @data[id.to_sym]
     end
+
     switch(id)
   end
 
@@ -62,6 +67,13 @@ class MatchService
 
   def all_equal?(list)
     list.uniq[0] != nil && list.uniq.length == 1
+  end
+
+  def full?(id)
+    plays = @data[id.to_sym].plays
+    plays.map do |line|
+      line.include? nil
+    end.exclude?(true)
   end
 end
 
