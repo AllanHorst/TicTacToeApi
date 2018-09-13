@@ -5,9 +5,15 @@ class MatchService
 
   def start_game(id, client)
     @data = {} unless @data
-    @data[id.to_sym] = Match.new if !@data[id.to_sym] || @data[id.to_sym].winner
+    return restart_game(id) if @data[id.to_sym] && @data[id.to_sym].winner
+
+    @data[id.to_sym] = Match.new if !@data[id.to_sym]
     add_player(id, client)
     @data[id.to_sym]
+  end
+
+  def restart_game(id)
+    @data[id.to_sym].start_game
   end
 
   def add_player(id, client)

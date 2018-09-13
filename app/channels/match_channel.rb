@@ -8,12 +8,12 @@ class MatchChannel < ApplicationCable::Channel
   end
 
   def start_game(data)
-    match = MatchService.instance.start_game(params[:id], data["client"])
+    match = MatchService.instance.start_game(params[:id], params[:client])
     broadcast(game: match.as_json)
   end
 
   def restart_game(data)
-    match = MatchService.instance.restart_game(params[:id], data["client"])
+    match = MatchService.instance.start_game(params[:id])
     broadcast(game: match.as_json)
   end
 
